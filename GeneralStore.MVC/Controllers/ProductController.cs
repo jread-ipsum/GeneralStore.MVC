@@ -14,7 +14,9 @@ namespace GeneralStore.MVC.Controllers
         // GET: Product
         public ActionResult Index()
         {
-            return View(_db.Products.ToList());
+            List<Product> productList = _db.Products.ToList();
+            List<Product> orderedList = productList.OrderBy(prod => prod.Name).ToList();
+            return View(orderedList);
         }
 
         // GET: Product
@@ -89,6 +91,20 @@ namespace GeneralStore.MVC.Controllers
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
+            return View(product);
+        }
+
+        //GET: Details
+        //Product/Details/{id}
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+
+            Product product = _db.Products.Find(id);
+            if (product == null)
+                return HttpNotFound();
 
             return View(product);
         }
