@@ -14,7 +14,7 @@ namespace GeneralStore.MVC.Controllers
         // GET: Customer
         public ActionResult Index()
         {
-            return View();
+            return View(_db.Customers.ToList());
         }
 
         //GET: Customer
