@@ -93,5 +93,19 @@ namespace GeneralStore.MVC.Controllers
 
             return View(customer);
         }
+
+        //GET: Detail
+        //Customer/Detail/{id}
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+
+            Customer customer = _db.Customers.Find(id);
+            if (customer == null)
+                return HttpNotFound();
+
+            return View(customer);
+        }
     }
 }
