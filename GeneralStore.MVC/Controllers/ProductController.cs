@@ -27,6 +27,7 @@ namespace GeneralStore.MVC.Controllers
 
         //POST: Product
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Product product)
         {
             if(ModelState.IsValid)
