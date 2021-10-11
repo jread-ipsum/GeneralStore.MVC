@@ -51,15 +51,25 @@ namespace GeneralStore.MVC.Controllers
         //POST: Transaction/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CreateTransactionViewModel viewModel)
+        public ActionResult Create(Transaction transaction)
         {
-
-            return View(viewModel);
+            if (ModelState.IsValid)
+            {
+                _db.Transactions.Add(transaction);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(transaction);
         }
 
         //GET: Transaction/Delete/{id}
         public ActionResult Delete(int? id)
         {
+            if (id==null)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+
             Transaction transaction = _db.Transactions.Find(id);
 
             if (transaction == null)
@@ -71,19 +81,17 @@ namespace GeneralStore.MVC.Controllers
         //POST: Transaction/Delete/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(Transaction transaction)
+        public ActionResult Delete(int id)
         {
-            //Do DB Stuff
-            if(/* something went wrong */ 1  != 1)
-            {
-                ViewData["ErrorMessage"] = "Couldn't delete your transaction";
-                return View(transaction);
-            }
+            Transaction transaction = _db.Transactions.Find(id);
+            _db.Transactions.Remove(transaction);
+            _db.SaveChanges();
+
             return RedirectToAction("Index");
         }
 
         //GET: Transaction/Edit/{id}
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
             Transaction transaction = _db.Transactions.Find(id);
 
@@ -121,6 +129,13 @@ namespace GeneralStore.MVC.Controllers
                 Text = product.Name,
                 Value = product.ProductId.ToString()
             });
+
+            if(ModelState.IsValid)
+            {
+                _db.Entry(transaction).State = System.Data.Entity.EntityState.Modified;
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
 
             return View(transaction);
         }
