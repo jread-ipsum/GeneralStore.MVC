@@ -7,15 +7,18 @@
 <h2>Transactions</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create a new Transaction", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.CustomerId)
+            @Html.DisplayNameFor(model => model.TransactionId)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ProductId)
+            @Html.DisplayNameFor(model => model.Customer.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Product.Name)
         </th>
         <th></th>
     </tr>
@@ -23,10 +26,13 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.CustomerId)
+            @Html.DisplayFor(modelItem => item.TransactionId)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ProductId)
+            @Html.DisplayFor(modelItem => item.Customer.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Product.Name)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.TransactionId }) |
